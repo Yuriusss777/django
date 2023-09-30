@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Order Detail</title>
+</head>
+<body>
+<h1>Order Detail</h1>
+<p>Client: {{ order.client }}</p>
+<p>Products:</p>
+<ul>
+    {% for product in order.products.all %}
+    <li>{{ product.name }}</li>
+    {% endfor %}
+</ul>
+<p>Total Amount: {{ order.total_amount }}</p>
+<p>Order Date: {{ order.order_date }}</p>
+</body>
+</html>

@@ -1,0 +1,3 @@
+{% for order_product in order_products %}
+<p>Товар: {{ order_product.product_ref.name }} - Количество: {{ order_product.quantity }}</p>
+{% endfor %}

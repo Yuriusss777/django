@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Product</title>
+</head>
+<body>
+<h1>Update Product</h1>
+
+<!-- Форма для обновления данных продукта -->
+<form method="POST" action="{% url 'update_product' product_id %}">
+    {% csrf_token %}
+
+    <!-- Поля для изменения данных продукта -->
+    <input type="text" name="name" placeholder="Name" value="{{ product.name }}">
+    <input type="text" name="price" placeholder="Price" value="{{ product.price }}">
+    <textarea name="description" placeholder="Description">{{ product.description }}</textarea>
+
+    <button type="submit">Update</button>
+</form>
+</body>
+</html>

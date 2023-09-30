@@ -1,0 +1,28 @@
+<!-- Форма для создания клиента -->
+<form method="POST" action="{% url 'create_client' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Создать клиента</button>
+</form>
+
+<!-- Таблица для отображения списка клиентов -->
+<table>
+    <thead>
+    <tr>
+        <th>Имя</th>
+        <th>Электронная почта</th>
+        <th>Телефон</th>
+        <th>Адрес</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for client in clients %}
+    <tr>
+        <td>{{ client.name }}</td>
+        <td>{{ client.email }}</td>
+        <td>{{ client.phone }}</td>
+        <td>{{ client.address }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>

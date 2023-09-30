@@ -1,0 +1,21 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Client</title>
+</head>
+<body>
+<h1>Update Client</h1>
+
+<!-- Форма для обновления данных клиента -->
+<form method="POST" action="{% url 'update_client' client_id %}">
+    {% csrf_token %}
+
+    <!-- Поля для изменения данных клиента -->
+    <input type="text" name="name" placeholder="Name" value="{{ client.name }}">
+    <input type="text" name="email" placeholder="Email" value="{{ client.email }}">
+
+    <button type="submit">Update</button>
+</form>
+</body>
+</html>

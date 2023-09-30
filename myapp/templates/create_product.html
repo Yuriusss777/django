@@ -1,0 +1,17 @@
+<!-- create_product.html -->
+<form method="POST" action="{% url 'create_product' %}">
+    {% csrf_token %}
+    <label for="id_name">Name:</label>
+    <input type="text" id="id_name" name="name" required>
+
+    <label for="id_price">Price:</label>
+    <input type="number" id="id_price" name="price" step="0.01" required>
+
+    <label for="id_description">Description:</label>
+    <textarea id="id_description" name="description" required></textarea>
+
+    <label for="id_quantity">Quantity:</label>
+    <input type="number" id="id_quantity" name="quantity" required>
+
+    <button type="submit">Create</button>
+</form>

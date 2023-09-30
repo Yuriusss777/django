@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Client List</title>
+</head>
+<body>
+<h1>Client List</h1>
+
+<!-- Таблица для отображения списка клиентов -->
+<table>
+    <thead>
+    <tr>
+        <th>Имя</th>
+        <th>Электронная почта</th>
+        <th>Телефон</th>
+        <th>Адрес</th>
+        <th>Дата регистрации</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for client in clients %}
+    <tr>
+        <td>{{ client.name }}</td>
+        <td>{{ client.email }}</td>
+        <td>{{ client.phone }}</td>
+        <td>{{ client.address }}</td>
+         <td>{{ client.registration_date }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

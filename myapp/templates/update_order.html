@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Order</title>
+</head>
+<body>
+<h1>Update Order</h1>
+
+<!-- Форма для обновления данных заказа -->
+<form method="POST" action="{% url 'update_order' order_id %}">
+    {% csrf_token %}
+
+    <!-- Поля для изменения данных заказа -->
+    <input type="text" name="customer_name" placeholder="Customer Name" value="{{ order.customer_name }}">
+    <input type="text" name="product_name" placeholder="Product Name" value="{{ order.product_name }}">
+    <input type="number" name="quantity" placeholder="Quantity" value="{{ order.quantity }}">
+
+    <button type="submit">Update</button>
+</form>
+</body>
+</html>
