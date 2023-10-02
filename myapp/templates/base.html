@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Мой сайт</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<header>
+    <h1>Мой сайт</h1>
+    <nav>
+        <ul>
+            <li><a href="/">Главная</a></li>
+            <li><a href="/about/">О нас</a></li>
+            <!-- Другие пункты меню -->
+        </ul>
+    </nav>
+</header>
+
+<div class="content">
+    {% block content %}{% endblock %}
+</div>
+
+<footer>
+    &copy; 2023 Мой сайт
+</footer>
+</body>
+</html>

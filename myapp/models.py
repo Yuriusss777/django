@@ -1,4 +1,27 @@
 from django.db import models
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+
+db_url = 'sqlite:///C:/pythonProject23/myproject/example.db'
+engine = create_engine(db_url)
+Session = sessionmaker(bind=engine)
+session = Session()
+
+Base = declarative_base()
+
+
+# Определение модели
+class User(Base):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    email = Column(String)
+
+
+# Создание таблицы в базе данных
+Base.metadata.create_all(engine)
 
 
 class Client(models.Model):
@@ -46,8 +69,5 @@ class OrderProduct(models.Model):
 
     def __str__(self):
         return f"Товар: {self.product_ref.name} - Количество: {self.quantity}"
-
-    class Meta:
-        db_table = 'myapp_orderproduct'
 
     objects = models.Manager()

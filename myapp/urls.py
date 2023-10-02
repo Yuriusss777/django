@@ -13,7 +13,7 @@ urlpatterns = [
     path('create_product', views.create_product, name='create_product'),
     path('products/<int:product_id>/update/', views.update_product, name='update_product'),
     path('products/<int:product_id>/delete/', views.delete_product, name='delete_product'),
-    path('products/', views.product_list, name='product_list'),
+    path('products', views.product_list, name='product_list'),
 
     # Пути для модели "Заказ"
     path('create_order', views.create_order, name='create_order'),
@@ -24,4 +24,8 @@ urlpatterns = [
     # # Путь для списка заказов клиента
     path('clients/<int:client_id>/orders/', views.client_orders, name='client_orders'),
     path('order_products', views.OrderProductListView.as_view(), name='order_product_list'),
+    path('order', views.orders, name='orders'),
+    path('client/<int:client_id>/ordered-products/<str:period>/', views.client_ordered_products,
+         name='client_ordered_products'),
 ]
+

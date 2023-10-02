@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Client, Product, Order, OrderProduct
 from .forms import ClientForm, ProductForm, OrderForm
 from django.views.generic import ListView
+from datetime import datetime, timedelta
+from django.utils import timezone
 
 
 # Обработка создания клиента
@@ -137,3 +139,54 @@ class OrderProductListView(ListView):
 
     def get_queryset(self):
         return OrderProduct.objects.all()
+
+
+def orders(request):
+    # Получение дат для фильтрации
+    today = datetime.now().date()
+    last_week = today - timedelta(days=7)
+    last_month = today - timedelta(days=30)
+    last_year = today - timedelta(days=365)
+
+    # Получение товаров за последнюю неделю
+    recent_products = Order.objects.filter(order_date__gte=last_week, order_date__lte=today).values_list(
+        'products__name', flat=True).distinct()
+
+    # Получение товаров за последний месяц
+    last_month_products = Order.objects.filter(order_date__gte=last_month, order_date__lte=today).values_list(
+        'products__name', flat=True).distinct()
+
+    # Получение товаров за последний год
+    last_year_products = Order.objects.filter(order_date__gte=last_year, order_date__lte=today).values_list(
+        'products__name', flat=True).distinct()
+
+    return render(request, 'orders.html', {
+        'recent_products': recent_products,
+        'last_month_products': last_month_products,
+        'last_year_products': last_year_products
+    })
+
+
+def client_ordered_products(request, client_id, period):
+    client = Client.objects.get(pk=client_id)
+    end_date = timezone.now()
+
+    if period == 'неделя':
+        start_date = end_date - timedelta(days=7)
+    elif period == 'месяц':
+        start_date = end_date - timedelta(days=30)
+    elif period == 'год':
+        start_date = end_date - timedelta(days=365)
+    else:
+        # По умолчанию, если не передан поддерживаемый период, используем месяц
+        start_date = end_date - timedelta(days=30)
+
+    client_orders_filtered = Order.objects.filter(customer=client, order_date__range=(start_date, end_date))
+    ordered_products = Product.objects.filter(order__in=client_orders_filtered).distinct()
+
+    return render(request, 'client_ordered_products.html', {
+        'client': client,
+        'ordered_products': ordered_products,
+        'period': period,
+    })
+
