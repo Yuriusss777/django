@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Product List</title>
-</head>
-<body>
-<h1>Product List</h1>
-
 <!-- Таблица для отображения списка продуктов -->
 <table>
     <thead>
@@ -13,8 +5,9 @@
         <th>Name</th>
         <th>Price</th>
         <th>Description</th>
-        <th>quantity</th>
-        <th>data added</th>
+        <th>Quantity</th>
+        <th>Date Added</th>
+        <th>Image</th>  <!-- Добавляем столбец для изображения -->
     </tr>
     </thead>
     <tbody>
@@ -25,9 +18,9 @@
         <td>{{ product.description }}</td>
         <td>{{ product.quantity }}</td>
         <td>{{ product.date_added }}</td>
+        <td><img src="{{ product.image.url }}" alt="{{ product.name }}" width="100"></td>
+        <!-- Отображаем изображение продукта -->
     </tr>
     {% endfor %}
     </tbody>
 </table>
-</body>
-</html>

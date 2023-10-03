@@ -38,8 +38,8 @@ def update_client(request, client_id):
 
 
 # Обработка удаления клиента
-def delete_client(request, id):
-    client = get_object_or_404(Client, id=id)
+def delete_client(request, client_id):
+    client = get_object_or_404(Client, id=client_id)
     if request.method == 'POST':
         client.delete()
         return redirect('client_list')
@@ -49,7 +49,7 @@ def delete_client(request, id):
 # Обработка создания товара
 def create_product(request):
     if request.method == 'POST':
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('product_list')
@@ -65,8 +65,8 @@ def product_list(request):
 
 
 # Обработка обновления товара
-def update_product(request, id):
-    product = get_object_or_404(Product, id=id)
+def update_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
     if request.method == 'POST':
         form = ProductForm(request.POST, instance=product)
         if form.is_valid():
@@ -78,12 +78,17 @@ def update_product(request, id):
 
 
 # Обработка удаления товара
-def delete_product(request, id_product):
-    product = get_object_or_404(Product, id=id_product)
+def delete_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
     if request.method == 'POST':
         product.delete()
         return redirect('product_list')
     return render(request, 'delete_product.html', {'product': product})
+
+
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    return render(request, 'product_detail.html', {'product': product})
 
 
 def create_order(request):
@@ -141,34 +146,7 @@ class OrderProductListView(ListView):
         return OrderProduct.objects.all()
 
 
-def orders(request):
-    # Получение дат для фильтрации
-    today = datetime.now().date()
-    last_week = today - timedelta(days=7)
-    last_month = today - timedelta(days=30)
-    last_year = today - timedelta(days=365)
-
-    # Получение товаров за последнюю неделю
-    recent_products = Order.objects.filter(order_date__gte=last_week, order_date__lte=today).values_list(
-        'products__name', flat=True).distinct()
-
-    # Получение товаров за последний месяц
-    last_month_products = Order.objects.filter(order_date__gte=last_month, order_date__lte=today).values_list(
-        'products__name', flat=True).distinct()
-
-    # Получение товаров за последний год
-    last_year_products = Order.objects.filter(order_date__gte=last_year, order_date__lte=today).values_list(
-        'products__name', flat=True).distinct()
-
-    return render(request, 'orders.html', {
-        'recent_products': recent_products,
-        'last_month_products': last_month_products,
-        'last_year_products': last_year_products
-    })
-
-
-def client_ordered_products(request, client_id, period):
-    client = Client.objects.get(pk=client_id)
+def get_date_range(period):
     end_date = timezone.now()
 
     if period == 'неделя':
@@ -181,6 +159,36 @@ def client_ordered_products(request, client_id, period):
         # По умолчанию, если не передан поддерживаемый период, используем месяц
         start_date = end_date - timedelta(days=30)
 
+    return start_date, end_date
+
+
+def get_recent_products(start_date, end_date):
+    recent_products = Order.objects.filter(order_date__range=(start_date, end_date)).values_list(
+        'products__name', flat=True).distinct()
+    return recent_products
+
+
+def orders(request):
+    today = datetime.now().date()
+    last_week = today - timedelta(days=7)
+    last_month = today - timedelta(days=30)
+    last_year = today - timedelta(days=365)
+
+    recent_products = get_recent_products(last_week, today)
+    last_month_products = get_recent_products(last_month, today)
+    last_year_products = get_recent_products(last_year, today)
+
+    return render(request, 'orders.html', {
+        'recent_products': recent_products,
+        'last_month_products': last_month_products,
+        'last_year_products': last_year_products
+    })
+
+
+def client_ordered_products(request, client_id, period):
+    client = Client.objects.get(pk=client_id)
+    start_date, end_date = get_date_range(period)
+
     client_orders_filtered = Order.objects.filter(customer=client, order_date__range=(start_date, end_date))
     ordered_products = Product.objects.filter(order__in=client_orders_filtered).distinct()
 
@@ -189,4 +197,3 @@ def client_ordered_products(request, client_id, period):
         'ordered_products': ordered_products,
         'period': period,
     })
-

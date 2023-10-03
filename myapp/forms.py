@@ -11,7 +11,9 @@ class ClientForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'price', 'description', 'quantity']
+        fields = ['name', 'price', 'description', 'quantity', 'photo']
+
+    photo = forms.FileField(required=False)
 
 
 class OrderForm(forms.ModelForm):

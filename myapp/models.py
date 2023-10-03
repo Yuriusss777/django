@@ -43,6 +43,7 @@ class Product(models.Model):
     description = models.TextField()
     quantity = models.IntegerField()
     date_added = models.DateTimeField(auto_now_add=True)
+    photo = models.ImageField(upload_to='product_photos/', null=True, blank=True)
 
     def __str__(self):
         return self.name
