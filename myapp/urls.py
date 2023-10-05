@@ -20,9 +20,10 @@ urlpatterns = [
     path('orders/<int:order_id>/update/', views.update_order, name='update_order'),
     path('orders/<int:order_id>/delete/', views.delete_order, name='delete_order'),
     path('orders/', views.order_list, name='order_list'),
+    path('orders/<int:order_id>/', views.order_detail, name='order_detail'),
+    path('order_products', views.OrderProductListView.as_view(), name='order_product_list'),
 
     path('clients/<int:client_id>/orders/', views.client_orders, name='client_orders'),
-    path('order_products', views.OrderProductListView.as_view(), name='order_product_list'),
     path('order', views.orders, name='orders'),
     path('client/<int:client_id>/ordered-products/<str:period>/', views.client_ordered_products,
          name='client_ordered_products'),

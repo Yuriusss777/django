@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
     <title>Order Detail</title>
 </head>
 <body>
 <h1>Order Detail</h1>
-<p>Client: {{ order.client }}</p>
-<p>Products:</p>
+
+<p><strong>Order Number:</strong> {{ order.order_number }}</p>
+<p><strong>Client:</strong> {{ order.client.name }}</p>
+<p><strong>Order Date:</strong> {{ order.order_date }}</p>
+
+
+<h2>Ordered Products</h2>
 <ul>
     {% for product in order.products.all %}
-    <li>{{ product.name }}</li>
+    <li>{{ product.name }} - ${{ product.price }}</li>
     {% endfor %}
 </ul>
-<p>Total Amount: {{ order.total_amount }}</p>
-<p>Order Date: {{ order.order_date }}</p>
+
 </body>
 </html>

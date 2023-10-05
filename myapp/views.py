@@ -18,12 +18,6 @@ def create_client(request):
     return render(request, 'create_client.html', {'form': form})
 
 
-# Обработка чтения всех клиентов
-def client_list(request):
-    clients = Client.objects.all()
-    return render(request, 'client_list.html', {'clients': clients})
-
-
 # Обработка обновления клиента
 def update_client(request, client_id):
     client = get_object_or_404(Client, id=client_id)
@@ -44,6 +38,16 @@ def delete_client(request, client_id):
         client.delete()
         return redirect('client_list')
     return render(request, 'delete_client.html', {'client': client})
+
+
+def client_detail(request, client_id):
+    client = get_object_or_404(Client, pk=client_id)
+    return render(request, 'client_detail.html', {'client': client})
+
+
+def client_list(request):
+    clients = Client.objects.all()
+    return render(request, 'client_list.html', {'clients': clients})
 
 
 # Обработка создания товара
@@ -135,6 +139,11 @@ def client_orders(request, client_id):
     client = get_object_or_404(Client, pk=client_id)
     orders = Order.objects.filter(client=client)
     return render(request, 'client_orders.html', {'client': client, 'orders': orders})
+
+
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    return render(request, 'order_detail.html', {'order': order})
 
 
 class OrderProductListView(ListView):
