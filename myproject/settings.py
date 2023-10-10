@@ -16,10 +16,12 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'Yuriusss.pythonanywhere.com',
+]
 
 INTERNAL_IPS = [
-    '127.0.0.1',
     'yuriusss.pythonanywhere.com',
 ]
 
